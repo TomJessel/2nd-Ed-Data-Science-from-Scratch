@@ -1,4 +1,3 @@
-
 """
 This is code for the introduction chapter. As such, it stands alone
 and won't be used anywhere else in the book.
@@ -6,16 +5,16 @@ and won't be used anywhere else in the book.
 # type: ignore
 
 users = [
-    { "id": 0, "name": "Hero" },
-    { "id": 1, "name": "Dunn" },
-    { "id": 2, "name": "Sue" },
-    { "id": 3, "name": "Chi" },
-    { "id": 4, "name": "Thor" },
-    { "id": 5, "name": "Clive" },
-    { "id": 6, "name": "Hicks" },
-    { "id": 7, "name": "Devin" },
-    { "id": 8, "name": "Kate" },
-    { "id": 9, "name": "Klein" }
+    {"id": 0, "name": "Hero"},
+    {"id": 1, "name": "Dunn"},
+    {"id": 2, "name": "Sue"},
+    {"id": 3, "name": "Chi"},
+    {"id": 4, "name": "Thor"},
+    {"id": 5, "name": "Clive"},
+    {"id": 6, "name": "Hicks"},
+    {"id": 7, "name": "Devin"},
+    {"id": 8, "name": "Kate"},
+    {"id": 9, "name": "Klein"}
 ]
 
 friendship_pairs = [(0, 1), (0, 2), (1, 2), (1, 3), (2, 3), (3, 4),
@@ -29,21 +28,21 @@ for i, j in friendship_pairs:
     friendships[i].append(j)  # Add j as a friend of user i
     friendships[j].append(i)  # Add i as a friend of user j
 
+
 def number_of_friends(user):
     """How many friends does _user_ have?"""
     user_id = user["id"]
     friend_ids = friendships[user_id]
     return len(friend_ids)
 
-total_connections = sum(number_of_friends(user)
-                        for user in users)        # 24
 
+total_connections = sum(number_of_friends(user)
+                        for user in users)  # 24
 
 assert total_connections == 24
 
-num_users = len(users)                            # length of the users list
-avg_connections = total_connections / num_users   # 24 / 10 == 2.4
-
+num_users = len(users)  # length of the users list
+avg_connections = total_connections / num_users  # 24 / 10 == 2.4
 
 assert num_users == 10
 assert avg_connections == 2.4
@@ -52,17 +51,18 @@ assert avg_connections == 2.4
 num_friends_by_id = [(user["id"], number_of_friends(user))
                      for user in users]
 
-num_friends_by_id.sort(                                # Sort the list
-       key=lambda id_and_friends: id_and_friends[1],   # by num_friends
-       reverse=True)                                   # largest to smallest
+num_friends_by_id.sort(  # Sort the list
+    key=lambda id_and_friends: id_and_friends[1],  # by num_friends
+    reverse=True)  # largest to smallest
 
 # Each pair is (user_id, num_friends):
 # [(1, 3), (2, 3), (3, 3), (5, 3), (8, 3),
 #  (0, 2), (4, 2), (6, 2), (7, 2), (9, 1)]
 
 
-assert num_friends_by_id[0][1] == 3     # several people have 3 friends
+assert num_friends_by_id[0][1] == 3  # several people have 3 friends
 assert num_friends_by_id[-1] == (9, 1)  # user 9 has only 1 friend
+
 
 def foaf_ids_bad(user):
     """foaf is short for "friend of a friend" """
@@ -70,7 +70,8 @@ def foaf_ids_bad(user):
             for friend_id in friendships[user["id"]]
             for foaf_id in friendships[friend_id]]
 
-[0, 2, 3, 0, 1, 3]
+
+# Called on user Hero: [0, 2, 3, 0, 1, 3]
 
 
 assert foaf_ids_bad(users[0]) == [0, 2, 3, 0, 1, 3]
@@ -79,26 +80,25 @@ print(friendships[0])  # [1, 2]
 print(friendships[1])  # [0, 2, 3]
 print(friendships[2])  # [0, 1, 3]
 
-
 assert friendships[0] == [1, 2]
 assert friendships[1] == [0, 2, 3]
 assert friendships[2] == [0, 1, 3]
 
-from collections import Counter                   # not loaded by default
+from collections import Counter  # not loaded by default
+
 
 def friends_of_friends(user):
     user_id = user["id"]
     return Counter(
         foaf_id
-        for friend_id in friendships[user_id]     # For each of my friends,
-        for foaf_id in friendships[friend_id]     # find their friends
-        if foaf_id != user_id                     # who aren't me
-        and foaf_id not in friendships[user_id]   # and aren't my friends.
+        for friend_id in friendships[user_id]  # For each of my friends,
+        for foaf_id in friendships[friend_id]  # find their friends
+        if foaf_id != user_id  # who aren't me
+        and foaf_id not in friendships[user_id]  # and aren't my friends.
     )
 
 
-print(friends_of_friends(users[3]))               # Counter({0: 2, 5: 1})
-
+print(friends_of_friends(users[3]))  # Counter({0: 2, 5: 1})
 
 assert friends_of_friends(users[3]) == Counter({0: 2, 5: 1})
 
@@ -119,11 +119,13 @@ interests = [
     (9, "Java"), (9, "MapReduce"), (9, "Big Data")
 ]
 
+
 def data_scientists_who_like(target_interest):
     """Find the ids of all users who like the target interest."""
     return [user_id
             for user_id, user_interest in interests
             if user_interest == target_interest]
+
 
 from collections import defaultdict
 
@@ -133,11 +135,12 @@ user_ids_by_interest = defaultdict(list)
 for user_id, interest in interests:
     user_ids_by_interest[interest].append(user_id)
 
-# Keys are user_ids, values are lists of interests for that user_id.
+# Keys are user_ids, values are lists of interests of that user_id.
 interests_by_user_id = defaultdict(list)
 
 for user_id, interest in interests:
     interests_by_user_id[user_id].append(interest)
+
 
 def most_common_interests_with(user):
     return Counter(
@@ -146,6 +149,7 @@ def most_common_interests_with(user):
         for interested_user_id in user_ids_by_interest[interest]
         if interested_user_id != user["id"]
     )
+
 
 salaries_and_tenures = [(83000, 8.7), (88000, 8.1),
                         (48000, 0.7), (76000, 6),
@@ -164,7 +168,6 @@ average_salary_by_tenure = {
     tenure: sum(salaries) / len(salaries)
     for tenure, salaries in salary_by_tenure.items()
 }
-
 
 assert average_salary_by_tenure == {
     0.7: 48000.0,
@@ -190,6 +193,7 @@ assert average_salary_by_tenure == {
  8.7: 83000.0,
  10: 83000.0}
 
+
 def tenure_bucket(tenure):
     if tenure < 2:
         return "less than two"
@@ -197,6 +201,7 @@ def tenure_bucket(tenure):
         return "between two and five"
     else:
         return "more than five"
+
 
 # Keys are tenure buckets, values are lists of salaries for that bucket.
 salary_by_tenure_bucket = defaultdict(list)
@@ -207,14 +212,13 @@ for salary, tenure in salaries_and_tenures:
 
 # Keys are tenure buckets, values are average salary for that bucket
 average_salary_by_bucket = {
-  tenure_bucket: sum(salaries) / len(salaries)
-  for tenure_bucket, salaries in salary_by_tenure_bucket.items()
+    tenure_bucket: sum(salaries) / len(salaries)
+    for tenure_bucket, salaries in salary_by_tenure_bucket.items()
 }
 
 {'between two and five': 61500.0,
  'less than two': 48000.0,
  'more than five': 79166.66666666667}
-
 
 assert average_salary_by_bucket == {
     'between two and five': 61500.0,
@@ -222,13 +226,15 @@ assert average_salary_by_bucket == {
     'more than five': 79166.66666666667
 }
 
+
 def predict_paid_or_unpaid(years_experience):
-  if years_experience < 3.0:
-    return "paid"
-  elif years_experience < 8.5:
-    return "unpaid"
-  else:
-    return "paid"
+    if years_experience < 3.0:
+        return "paid"
+    elif years_experience < 8.5:
+        return "unpaid"
+    else:
+        return "paid"
+
 
 interests = [
     (0, "Hadoop"), (0, "Big Data"), (0, "HBase"), (0, "Java"),
@@ -254,4 +260,3 @@ words_and_counts = Counter(word
 for word, count in words_and_counts.most_common():
     if count > 1:
         print(word, count)
-

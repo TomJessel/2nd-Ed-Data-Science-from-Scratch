@@ -109,7 +109,7 @@ from dateutil.parser import parse
 def parse_row(row: List[str]) -> StockPrice:
     symbol, date, closing_price = row
     return StockPrice(symbol=symbol,
-                      date=parse(date).date(),
+                      date =parse(date).date(),
                       closing_price=float(closing_price))
 
 

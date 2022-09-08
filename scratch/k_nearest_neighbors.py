@@ -74,7 +74,7 @@ def main():
         reader = csv.reader(f)
         iris_data = [parse_iris_row(row) for row in reader]
     
-    # We'll also group just the points by species/label so we can plot them.
+    # We'll also group just the points by species/label, so we can plot them.
     points_by_species: Dict[str, List[Vector]] = defaultdict(list)
     for iris in iris_data:
         points_by_species[iris.label].append(iris.point)
